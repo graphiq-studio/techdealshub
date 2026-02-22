@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/ 
+
+Sitemap: {{ request.build_absolute_uri|slice:":-1" }}/sitemap.xml

@@ -1,0 +1,77 @@
+{% extends "base/base.html" %}
+
+{% block title %}Blog - TechDealsHub{% endblock %}
+{% block meta_description %}Read the latest tech articles, reviews, and tips on TechDealsHub{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-12">Tech Blog</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {% for post in posts %}
+        <article class="bg-white rounded-lg shadow-md hover-scale cursor-pointer overflow-hidden transition">
+            {% if post.featured_image %}
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-48 object-cover">
+            {% else %}
+                <div class="w-full h-48 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                    <i class="fas fa-newspaper text-6xl text-white opacity-50"></i>
+                </div>
+            {% endif %}
+            <div class="p-6">
+                <div class="flex items-center text-sm text-gray-500 mb-3">
+                    <i class="fas fa-calendar mr-2"></i>
+                    {{ post.published_at|date:"M d, Y" }}
+                    {% if post.author %}
+                    <span class="mx-2">•</span>
+                    <i class="fas fa-user mr-2"></i>
+                    {{ post.author_name }}
+                    {% endif %}
+                </div>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+                    {{ post.title }}
+                </h2>
+                <p class="text-gray-600 mb-4 line-clamp-3">
+                    {{ post.excerpt|default:post.content|truncatewords:20 }}
+                </p>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">
+                        <i class="fas fa-eye mr-1"></i>{{ post.views_count }}
+                    </span>
+                    <a href="{% url 'blog:blog_detail' post.slug %}" class="text-purple-600 font-semibold hover:text-purple-700 transition">
+                        Read More <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <div class="col-span-full text-center py-12">
+            <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-2xl font-bold text-gray-600">No posts yet</h3>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if posts.has_other_pages %}
+    <div class="flex justify-center items-center gap-2 mt-12">
+        {% if posts.has_previous %}
+            <a href="?page=1" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">First</a>
+            <a href="?page={{ posts.previous_page_number }}" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Previous</a>
+        {% endif %}
+
+        {% for num in posts.paginator.page_range %}
+            {% if posts.number == num %}
+                <span class="px-4 py-2 rounded-lg bg-purple-600 text-white">{{ num }}</span>
+            {% else %}
+                <a href="?page={{ num }}" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Next</a>
+            <a href="?page={{ posts.paginator.num_pages }}" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Last</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

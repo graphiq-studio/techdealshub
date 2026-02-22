@@ -1,0 +1,34 @@
+{% extends "base/base.html" %}
+
+{% block title %}Categories - TechDealsHub{% endblock %}
+{% block meta_description %}Browse products by category. Find tech deals organized by category on TechDealsHub.{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-12">Browse Categories</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for category in categories %}
+        <a href="{% url 'products:category_detail' category.slug %}" class="bg-white rounded-lg shadow-md hover-scale hover:shadow-lg transition overflow-hidden">
+            <div class="h-32 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                {% if category.icon %}
+                    <i class="fas {{ category.icon }} text-6xl text-white opacity-80"></i>
+                {% else %}
+                    <i class="fas fa-cube text-6xl text-white opacity-80"></i>
+                {% endif %}
+            </div>
+            <div class="p-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ category.name }}</h3>
+                <p class="text-sm text-gray-600 mb-4">{{ category.product_count }} products</p>
+                {% if category.description %}
+                    <p class="text-gray-700 text-sm line-clamp-2">{{ category.description }}</p>
+                {% endif %}
+                <div class="mt-4 text-purple-600 font-semibold">
+                    Explore <i class="fas fa-arrow-right ml-2"></i>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base/base.html" %}
+
+{% block title %}Search Results: "{{ query }}" - TechDealsHub{% endblock %}
+{% block meta_description %}Search results for "{{ query }}" on TechDealsHub{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Search Results</h1>
+    <p class="text-gray-600 mb-8">
+        {% if query %}
+            Showing results for "<span class="font-semibold">{{ query }}</span>"
+        {% else %}
+            Please enter a search term
+        {% endif %}
+    </p>
+
+    <!-- Products Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {% for product in products %}
+            {% include "includes/product_card.html" %}
+        {% empty %}
+            <div class="col-span-full text-center py-12">
+                <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-600">No products found</h3>
+                <p class="text-gray-500 mt-2">Try different keywords or browse by category</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if products.has_other_pages %}
+    <div class="flex justify-center items-center gap-2">
+        {% if products.has_previous %}
+            <a href="?q={{ query }}&page=1" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">First</a>
+            <a href="?q={{ query }}&page={{ products.previous_page_number }}" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Previous</a>
+        {% endif %}
+
+        {% for num in products.paginator.page_range %}
+            {% if products.number == num %}
+                <span class="px-4 py-2 rounded-lg bg-purple-600 text-white">{{ num }}</span>
+            {% else %}
+                <a href="?q={{ query }}&page={{ num }}" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if products.has_next %}
+            <a href="?q={{ query }}&page={{ products.next_page_number }}" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Next</a>
+            <a href="?q={{ query }}&page={{ products.paginator.num_pages }}" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Last</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

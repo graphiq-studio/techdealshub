@@ -1,0 +1,74 @@
+{% extends "base/base.html" %}
+
+{% block title %}Contact Us - TechDealsHub{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">Contact Us</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Contact Form -->
+        <div class="bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Name</label>
+                    <input type="text" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                    <input type="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Subject</label>
+                    <input type="text" name="subject" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+                    <textarea name="message" rows="5" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                    Send Message
+                </button>
+            </form>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="space-y-8">
+            <div class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                    <i class="fas fa-envelope text-purple-600 mr-3"></i>Email
+                </h3>
+                <p class="text-gray-600">contact@techdealshub.com</p>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                    <i class="fas fa-phone text-purple-600 mr-3"></i>Phone
+                </h3>
+                <p class="text-gray-600">+1 (555) 123-4567</p>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                    <i class="fas fa-map-marker-alt text-purple-600 mr-3"></i>Address
+                </h3>
+                <p class="text-gray-600">
+                    123 Tech Street<br>
+                    San Francisco, CA 94102<br>
+                    United States
+                </p>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">
+                    <i class="fas fa-clock text-purple-600 mr-3"></i>Business Hours
+                </h3>
+                <p class="text-gray-600 mb-2">Monday - Friday: 9:00 AM - 6:00 PM</p>
+                <p class="text-gray-600">Saturday & Sunday: Closed</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

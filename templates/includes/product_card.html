@@ -1,0 +1,79 @@
+{# Product Card Component #}
+<div class="bg-white rounded-lg shadow-md hover-scale overflow-hidden transition">
+    <!-- Product Image -->
+    <div class="relative h-48 bg-gray-200 overflow-hidden">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+        {% else %}
+            <div class="w-full h-full flex items-center justify-center">
+                <i class="fas fa-image text-4xl text-gray-400"></i>
+            </div>
+        {% endif %}
+        
+        <!-- Badge -->
+        {% if product.is_featured %}
+        <div class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-lg text-xs font-semibold">
+            Featured
+        </div>
+        {% endif %}
+        
+        {% if product.discount_percentage %}
+        <div class="absolute top-3 left-3 bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-semibold">
+            -{{ product.discount_percentage }}%
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Product Info -->
+    <div class="p-4">
+        <!-- Category -->
+        <p class="text-xs text-purple-600 font-semibold mb-2">
+            {{ product.category.name }}
+        </p>
+
+        <!-- Title -->
+        <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+            {{ product.name }}
+        </h3>
+
+        <!-- Rating -->
+        <div class="flex items-center mb-3">
+            <div class="flex text-yellow-400">
+                {% for i in "12345" %}
+                    {% if i <= product.rating %}
+                        <i class="fas fa-star"></i>
+                    {% else %}
+                        <i class="far fa-star"></i>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <span class="text-sm text-gray-600 ml-2">({{ product.rating }})</span>
+        </div>
+
+        <!-- Price -->
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <p class="text-2xl font-bold text-purple-600">${{ product.price }}</p>
+                {% if product.original_price %}
+                    <p class="text-sm text-gray-500 line-through">${{ product.original_price }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="flex justify-between text-xs text-gray-500 mb-4 pb-4 border-b">
+            <span><i class="fas fa-mouse-pointer"></i> {{ product.click_count }} clicks</span>
+            <span><i class="fas fa-eye"></i> {{ product.views_count }} views</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="space-y-2">
+            <a href="{% url 'products:product_detail' product.slug %}" class="block w-full bg-gray-100 text-gray-900 px-4 py-2 rounded-lg text-center font-semibold hover:bg-gray-200 transition">
+                View Details
+            </a>
+            <a href="{% url 'products:affiliate_redirect' product.id %}" class="block w-full bg-purple-600 text-white px-4 py-2 rounded-lg text-center font-semibold hover:bg-purple-700 transition">
+                Check Price <i class="fas fa-external-link-alt ml-2"></i>
+            </a>
+        </div>
+    </div>
+</div>

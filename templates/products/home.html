@@ -1,0 +1,137 @@
+{% extends "base/base.html" %}
+
+{% block title %}Home - TechDealsHub{% endblock %}
+{% block meta_description %}Discover the best tech products and affiliate deals on AliExpress. Browse featured gadgets, top-rated items, and read helpful tech reviews.{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="gradient-bg text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Find Tech Deals You Love
+            </h1>
+            <p class="text-lg text-purple-100 mb-8">
+                Discover amazing tech products with verified affiliate links. Save money on your favorite gadgets from AliExpress.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="{% url 'products:category_list' %}" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-purple-50 transition text-center">
+                    Browse Products
+                </a>
+                <a href="{% url 'blog:blog_list' %}" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition text-center">
+                    Read Reviews
+                </a>
+            </div>
+        </div>
+        <div class="hidden md:block text-center">
+            <i class="fas fa-shopping-bag text-9xl text-purple-200 opacity-50"></i>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+            Featured Products
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for product in featured_products %}
+                {% include "includes/product_card.html" %}
+            {% endfor %}
+        </div>
+        <div class="text-center mt-12">
+            <a href="{% url 'products:category_list' %}" class="inline-block bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                View All Products
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Top Rated Products -->
+<section class="py-16 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+            Top Rated Products
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for product in top_rated_products %}
+                {% include "includes/product_card.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Latest Blog Posts -->
+<section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+            Latest From Our Blog
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for post in latest_blogs %}
+            <article class="bg-white rounded-lg shadow-md hover-scale cursor-pointer overflow-hidden">
+                {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-48 object-cover">
+                {% else %}
+                    <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-image text-4xl text-gray-400"></i>
+                    </div>
+                {% endif %}
+                <div class="p-6">
+                    <div class="text-sm text-gray-500 mb-2">
+                        <i class="fas fa-calendar"></i> {{ post.published_at|date:"M d, Y" }}
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">
+                        {{ post.title }}
+                    </h3>
+                    <p class="text-gray-600 mb-4 line-clamp-2">
+                        {{ post.excerpt|truncatewords:20 }}
+                    </p>
+                    <a href="{% url 'blog:blog_detail' post.slug %}" class="text-purple-600 font-semibold hover:text-purple-700 transition">
+                        Read More <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-12">
+            <a href="{% url 'blog:blog_list' %}" class="inline-block bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                View All Articles
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-16 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+            Browse by Category
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for category in categories %}
+            <a href="{% url 'products:category_detail' category.slug %}" class="bg-white p-6 rounded-lg shadow-md hover-scale hover:shadow-lg transition text-center">
+                {% if category.icon %}
+                    <i class="fas {{ category.icon }} text-4xl text-purple-600 mb-4"></i>
+                {% else %}
+                    <i class="fas fa-cube text-4xl text-purple-600 mb-4"></i>
+                {% endif %}
+                <h3 class="text-lg font-semibold text-gray-900">{{ category.name }}</h3>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="gradient-bg text-white py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-4">Stay Updated with Latest Deals</h2>
+        <p class="text-purple-100 mb-8">
+            Get the best tech deals delivered to your inbox
+        </p>
+    </div>
+</section>
+
+{% endblock %}
